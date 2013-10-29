@@ -3,7 +3,7 @@ import time
 def load_db(filename='astrocoffee_db.txt'):
     """
     load the 'db', which is just a text file with:
-    First Last id last_presented gone_until status email
+    id First Last email last_presented gone_until status
     """
     # read in the file
     idx = []
@@ -12,14 +12,14 @@ def load_db(filename='astrocoffee_db.txt'):
     f.close()
 
     # db definition
-    keys = ['firstname', 'lastname', 'id', 'last',
-            'gone', 'status', 'email']
+    keys = ['id', 'firstname', 'lastname', 'email', 'last',
+            'gone', 'status']
     Nkeys = len(keys)
     db = {key: [] for key in keys}
 
     # load db
     for l in lines:
-        if l == '\n':
+        if (l == '\n') | (l[0] == '#'):
             continue
         l = l.split()
         assert len(l) == Nkeys
