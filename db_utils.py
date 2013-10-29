@@ -3,7 +3,7 @@ import time
 def load_db(filename='astrocoffee_db.txt'):
     """
     load the 'db', which is just a text file with:
-    First Last id last_presented gone_until status
+    First Last id last_presented gone_until status email
     """
     # read in the file
     idx = []
@@ -13,7 +13,7 @@ def load_db(filename='astrocoffee_db.txt'):
 
     # db definition
     keys = ['firstname', 'lastname', 'id', 'last',
-            'gone', 'status']
+            'gone', 'status', 'email']
     Nkeys = len(keys)
     db = {key: [] for key in keys}
 
@@ -45,7 +45,7 @@ def assign_response(id, response, gone=None, filename='astrocoffee_db.txt'):
 
     # update gone data
     if gone is not None:
-        db['gone'][id] = '20' + gone[4:] + gone[2:4] + gone[:2]
+        db['gone'][id] = '20' + gone[4:] + gone[2:4] + gone[2:]
 
     write_db(db, keys)
 
