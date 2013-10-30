@@ -8,10 +8,10 @@
      <br><p>
         <h3>Bummer!</h3><br>
 	<p><div class=flash> We hate to see you go, but ok!</div></p>
-	Send us email if you want back on.
+	Send us email if you want back on the list.
   </div>
   <?php
-     $f = fopen("answer.txt", "w");
+     $f = fopen("answer_%s.txt", "w");
      $today = date(DATE_ATOM);
      fwrite($f, "remove remove $today");
      fclose($f);

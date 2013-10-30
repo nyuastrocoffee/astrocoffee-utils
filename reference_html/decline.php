@@ -36,7 +36,7 @@ function message($ok, $phrase, $kind, $date, $today)
 
 function record($kind, $date, $today)
 {
-  $f = fopen("answer.txt", "w");
+  $f = fopen("answer_%s.txt", "w");
   fwrite($f, "$kind $date $today");
   fclose($f);
 }
@@ -66,7 +66,6 @@ function record($kind, $date, $today)
 $today = date(DATE_ATOM);
 $ok = check_date($date);
 message($ok, $phrase, $kind, $date, $today);
-
 
 ?>
 

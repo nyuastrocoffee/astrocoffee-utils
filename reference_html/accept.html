@@ -7,7 +7,7 @@
   <h1>CCPP Astrocoffee</h1>
      <br><p>
         <h3>Sweet!</h3><br>
-	<p><div class=flash> Thanks for agreeing to present on -date-.  Here are a few tips 
+	<p><div class=flash> Thanks for agreeing to present on %s.  Here are a few tips 
 	    to keep in mind:</div></p>
 	<ul>
             <li>Aim to keep your presentation to ~10 minutes, and leave time for ~5 mins of 
@@ -24,10 +24,9 @@
         </ul>
   </div>
   <?php
-     $f = fopen("answer.txt", "w");
+     $f = fopen("answer_%s.txt", "w");
      $today = date(DATE_ATOM);
      fwrite($f, "accept accept $today");
      fclose($f);
-
   ?>
 </HTML>
