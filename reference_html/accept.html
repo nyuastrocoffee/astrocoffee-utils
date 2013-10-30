@@ -1,0 +1,33 @@
+<HTML>
+<title>CCPP Astrocoffee</title>
+  <HEAD>
+    <LINK href="style.css" rel="stylesheet" type="text/css">
+  </HEAD>
+<div class=page>
+  <h1>CCPP Astrocoffee</h1>
+     <br><p>
+        <h3>Sweet!</h3><br>
+	<p><div class=flash> Thanks for agreeing to present on -date-.  Here are a few tips 
+	    to keep in mind:</div></p>
+	<ul>
+            <li>Aim to keep your presentation to ~10 minutes, and leave time for ~5 mins of 
+	        discussion/questions for the audience.</li><br>
+            <li>Keep in mind that not everyone is an expert on the topic, so be sure to 
+	        provide context (why is this important?) and basic explanations where 
+	        necessary.</li><br>
+            <li>Have a minimum goal of conveying the main points presented in the paper, 
+                as well as touching on main figures/numbers/etc.  Your criticism would be 
+                an enhanced goal, which will likely come up in discussion.</li><br>
+            <li>Try consulting <a href="http://cosmo.nyu.edu/ccppshareview.html">
+                Mindshare</a>, or asking around if you are having trouble picking an 
+                article.</li><br>
+        </ul>
+  </div>
+  <?php
+     $f = fopen("answer.txt", "w");
+     $today = date(DATE_ATOM);
+     fwrite($f, "accept accept $today");
+     fclose($f);
+
+  ?>
+</HTML>
