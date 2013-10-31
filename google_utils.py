@@ -4,9 +4,9 @@ import gdata.spreadsheet.service
 
 import numpy as np
 
-def fetch_from_google_docs(username, password, docname):
+def connect_to_google_doc(username, password, docname):
     """
-    Get the astrocoffee `database`
+    Connect and return client, ids
     """
     # client parameters
     gd_client = gdata.spreadsheet.service.SpreadsheetsService()
@@ -25,6 +25,16 @@ def fetch_from_google_docs(username, password, docname):
     spreadsheet_id = feed.entry[0].id.text.rsplit('/',1)[1]
     feed = gd_client.GetWorksheetsFeed(spreadsheet_id)
     worksheet_id = feed.entry[0].id.text.rsplit('/',1)[1]
+
+    return gd_client, spreadsheet_id, worksheet_id
+
+def fetch_from_google_docs(username, password, docname):
+    """
+    Get the astrocoffee `database`
+    """
+    # connect
+    gd_client, spreadsheet_id, worksheet_id = \
+        connect_to_google_doc(username, password, docname)
 
     # get the data
     keys = np.array(['name', 'email', 'last-presented', 'gone-until', 'going-on'])
