@@ -8,12 +8,12 @@ def get_presenters_to_ask(desired_date, username, password, docname):
     key_names = ['name', 'email', 'last-presented', 'gone-until', 'going-on']
     for i in range(len(key_names)):
         assert key_names[i] == keys[i], 'fix yo api'
-    names = data[0]
-    emails = data[1]
-    last = data[2]
-    gone = data[3]
-    going = data[4]
-
+    names = data[keys[0]]
+    emails = data[keys[1]]
+    last = data[keys[2]]
+    gone = data[keys[3]]
+    going = data[keys[4]]
+    
     # how many are needed, get rid of those who've gone
     N_needed = 2
     for i in range(going.size):
@@ -41,11 +41,11 @@ def get_presenters_to_ask(desired_date, username, password, docname):
 
 if __name__ == '__main__':
 
-    import sys
+    import os
 
-    u = sys.argv[1]
-    p = sys.argv[2]
-    d = sys.argv[3]
+    u = os.environ['AC_USER']
+    p = os.environ['AC_PASS']
+    d = os.environ['AC_DOC']
 
     dd = 20131105
-    get_presenters_to_ask(dd, u, p, d)
+    print get_presenters_to_ask(dd, u, p, d)
