@@ -14,7 +14,7 @@ function check_date($date)
   $ok = TRUE;
   if ((strlen($date) != 6) or ((int) substr($date, 0, 2) > 31) 
       or ((int) substr($date, 0, 2) < 1) or ((int) substr($date, 2, 2) < 1)
-      or ((int) substr($date, 4, 2) < 13))
+      or ((int) substr($date, 2, 2) > 12) or ((int) substr($date, 4, 2) < 13))
     {
       $ok = FALSE;
     }
@@ -59,7 +59,7 @@ function record($kind, $date, $today)
      $dd = substr($date, 0, 2);
      $mm = substr($date, 2, 2);
      $yy = substr($date, 4, 2);
-     $phrase = "you will next present on $dd-$mm-20$yy (DD-MM-YYYY)";
+     $phrase = "you will next present on $dd-$mm-20$yy (DD-MM-YYYY).";
      $kind = 'willgo';
    }
 

@@ -2,6 +2,8 @@ import os
 import string
 import random
 
+from calendar import day_name, month_name, weekday
+
 def render(dst_dir, ext, date, kind):
     """
     Insert date and hashed ext, write the html.
@@ -26,14 +28,38 @@ def render(dst_dir, ext, date, kind):
     f.write(html)
     f.close()
 
+    os.system('touch ' + dst_dir + 'answer_' + ext + '.txt')
+    os.system('chmod a+w ' + dst_dir +'answer_' + ext + '.txt')
+
+def poll(dst_dir, ext, next_date, following_date):
+    """
+    Build all the html
+    """
+    kinds = ['ask.html', 'accept.html', 'decline.html', 'decline.php', 'remove.html'] 
+    for i in range(len(kinds)):
+        if kinds[i] == 'decline.html':
+            date = following_date
+        else:
+            date = next_date
+        try:
+            y = int(date[:4])
+            m = int(date[4:6])
+            d = int(date[6:])
+            pretty_date = day_name[weekday(y, m, d)]
+            pretty_date += ' '.join([',', month_name[m], str(d)])
+        except:
+            pretty_date = date
+
+        render(dst_dir, ext, pretty_date, kinds[i])
+    
+    return pretty_date
+
 if __name__ == '__main__':
     
     DST_DIR = os.environ['AC_DIR']
 
     N = 32
     ext = ''.join(random.choice(string.ascii_letters + string.digits) for x in range(N))
-    os.system('touch ' + DST_DIR + 'answer_' + ext + '.txt')
-    os.system('chmod a+w ' + DST_DIR +'answer_' + ext + '.txt')
 
     date = 'Tuesday, October 7'
     render(DST_DIR, ext, date, 'ask.html')

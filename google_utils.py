@@ -20,10 +20,15 @@ def get_calender_events(username, password):
     for i, event in zip(xrange(len(feed.entry)), feed.entry):
         if ((event.title.text == 'Astrocoffee') | \
                 (event.title.text == 'Astrocoffee')):    
-            events = [w.start[:10] for w in event.when]
+            events = [''.join(w.start[:10].split('-')) for w in event.when]
 
-    if events[0] == today:
-        events = events[1:3]
+    if events[0] == ''.join(today.split('-')):
+        events = events[1:]
+
+    assert len(events) > 0, 'No \'Astrocoffee\' events on calendar'
+
+    if len(events) == 1:
+        evenpts.append('TBD')
 
     return events[:2]
 
@@ -56,19 +61,23 @@ def insert_into_google_docs(username, password, docname, data):
     # flattened list
     keys = ['name', 'email', 'last-presented', 'gone-until', 'going-on']
     db = [keys]
+    Nkeys = len(keys)
     Nrows = len(data[keys[0]])
     for i in range(Nrows):
         db.append([data[k][i] for k in keys])
     db = np.array(db).ravel()
 
     # list of cells
-    end_letter = string.ascii_uppercase[len(keys) - 1]
+    end_letter = string.ascii_uppercase[Nkeys - 1]
     end_number = str(Nrows + 1)
     cell_list = ws.range(''.join(['A1:', end_letter, end_number]))
 
     # fill in cells
     for i, c in enumerate(cell_list):
         c.value = db[i]
+
+    # resize db
+    ws.resize(rows=Nrows + 1, cols=Nkeys)
 
     # update cells
     ws.update_cells(cell_list)

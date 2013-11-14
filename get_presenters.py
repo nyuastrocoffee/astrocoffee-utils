@@ -1,8 +1,10 @@
 import numpy as np
 from google_utils import *
 
-def get_presenters_to_ask(desired_date, username, password, docname):
-
+def get_presenters_to_ask(desired_date, username, password, docname, N_needed=2):
+    """
+    Return a ranked list of names and emails, along with the database.
+    """
     # current data, unpack
     data, keys = fetch_from_google_docs(username, password, docname)
     key_names = ['name', 'email', 'last-presented', 'gone-until', 'going-on']
@@ -15,13 +17,16 @@ def get_presenters_to_ask(desired_date, username, password, docname):
     going = data[keys[4]]
     
     # how many are needed, get rid of those who've gone
-    N_needed = 2
+    going_names = np.array([])
+    going_emails = np.array([])
     for i in range(going.size):
         if going[i] == 'None':
             continue
         if int(going[i]) < desired_date:
             going[i] = 'None'
         if going[i] == np.str(desired_date):
+            going_names = np.append(going_names, names[i])
+            going_emails = np.append(going_emails, emails[i])
             N_needed -= 1
 
     # check to see if any gone folks are back
@@ -33,11 +38,19 @@ def get_presenters_to_ask(desired_date, username, password, docname):
 
     # get dates, assess weights, draw needed
     eligible = (gone == 'None') & (going == 'None')
-    ind = np.argsort(last[eligible].astype(np.int))
-    drawn_names = names[eligible][ind][:N_needed]
-    drawn_emails = emails[eligible][ind][:N_needed]
+    if any(eligible):
+        year = float(time.strftime('%Y')) * 10000.
+        names = names[eligible]
+        emails = emails[eligible]
+        last = last[eligible].astype(np.float) - year
 
-    return drawn_names, drawn_emails
+        # weight metric, update?
+        w = np.random.rand(len(names)) / (last - last.min() + 1)
+        ind = np.argsort(w)[::-1]
+        going_names = np.append(going_names, names[ind])
+        going_emails = np.append(going_emails, emails[ind])
+
+    return going_names, going_emails, data
 
 if __name__ == '__main__':
 
@@ -47,5 +60,5 @@ if __name__ == '__main__':
     p = os.environ['AC_PASS']
     d = os.environ['AC_DOC']
 
-    dd = 20131105
+    dd = 20131121
     print get_presenters_to_ask(dd, u, p, d)
